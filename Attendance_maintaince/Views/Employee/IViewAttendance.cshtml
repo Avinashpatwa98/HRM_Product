@@ -1,0 +1,21 @@
+﻿@* @model IEnumerable<Attendance>
+<table>
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var attendance in Model)
+        {
+            <tr>
+                <td>@attendance.Employee.Name</td>
+                <td>@attendance.Date.ToShortDateString()</td>
+                <td>@(attendance.IsPresent ? "Present" : "Absent")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+ *@

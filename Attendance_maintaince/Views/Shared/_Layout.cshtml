@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Attendance App</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Site-specific CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        /* Prevent horizontal overflow */
+        html, body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Ensure full height */
+        }
+        /* Ensure the navbar stays fixed at the top */
+        .navbar {
+            padding: 10px;
+            z-index: 1030;
+            position: fixed;
+            width: 100%;
+            top: 0;
+        }
+        /* Main content area should be scrollable */
+        main {
+            padding-top: 50px; 
+         
+            height: auto; 
+            flex-grow: 1; 
+        }
+        /* Footer should move along with content */
+        footer {
+            width: 100%;
+            padding: 25px;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+        /* Ensure the container fills the available width */
+        .container-fluid {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex flex-column min-vh-100">
+        <!-- Fixed Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="/Home/Index">Attendance App</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/Home/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/Home/Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/Login/Login">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area with Scrolling -->
+        <main class="flex-grow-1">
+            <div class="container-fluid p-0">
+                @RenderBody()
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            &copy; 2024 Attendance App | <a href="/Home/Privacy" class="text-info">Privacy</a>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

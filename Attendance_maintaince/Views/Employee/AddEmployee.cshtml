@@ -1,0 +1,16 @@
+﻿@model Employee
+<form asp-action="AddEmployee" method="post" id="addEmployeeForm">
+    <div>
+        <label>Name</label>
+        <input asp-for="Name" required />
+    </div>
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" required />
+    </div>
+    <div>
+        <label>Position</label>
+        <input asp-for="Position" required />
+    </div>
+    <button type="submit">Add Employee</button>
+</form>

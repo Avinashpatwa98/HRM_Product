@@ -1,0 +1,32 @@
+﻿@* @model List<Attendance> // Ensure this matches the model passed from your controller
+
+@{
+    ViewData["Title"] = "Bulk Attendance";
+}
+
+<h2>Bulk Attendance</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Present</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var attendance in Model) // Loop through the list of attendance records
+        {
+            <tr>
+                <td>@attendance.Employee?.Name</td> <!-- Access the Name property of the Employee -->
+                <td>@attendance.Date.ToShortDateString()</td> // Format the date
+                <td>@(attendance.IsPresent ? "Yes" : "No")</td> // Check presence
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}
+ *@

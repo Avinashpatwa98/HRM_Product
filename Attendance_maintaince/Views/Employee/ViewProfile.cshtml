@@ -1,0 +1,111 @@
+﻿
+ 
+@model Attendance_maintaince.Models.Employee
+@using Microsoft.AspNetCore.Http
+@{
+    var token = Context.Request.Cookies["AuthToken"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Employee Profile</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="d-flex flex-row vh-100">
+        <!-- Sidebar Section -->
+        <aside class="bg-dark text-white p-4" style="width: 200px;">
+            <h4 class="text-left mb-4" style="padding: 10px;">Menu</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link text-white" })
+                </li>
+                <li class="nav-item mb-2">
+                    @Html.ActionLink("Attendance", "Index", "Attendance", null, new { @class = "nav-link text-white" })
+                </li>
+                <li class="nav-item mb-2">
+                    @Html.ActionLink("Leaves", "Index", "Leaves", null, new { @class = "nav-link text-white" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Settings", "Index", "Settings", null, new { @class = "nav-link text-white" })
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Section -->
+        <div class="flex-grow-1 p-4 bg-light">
+            <!-- Header Section -->
+            <header class="d-flex justify-content-between align-items-center bg-white shadow-sm p-3 mb-4 rounded">
+                <h2 class="mb-0">Your Logo</h2>
+                <div class="text-dark fw-bold">
+                    @Model?.Name ?? "User"
+                </div>
+            </header>
+
+            <!-- Main Content Section -->
+            <section class="bg-white p-4 rounded shadow-sm">
+                <h3 class="mb-4">Employee Profile</h3>
+                @if (Model != null)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> @Model.Name</p>
+                            <p><strong>Email:</strong> @Model.Email</p>
+                            <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Position:</strong> @Model.Position</p>
+                            <p><strong>Role:</strong> @Model.Role</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-danger text-center fs-5">No employee data found. Please try again later.</p>
+                }
+            </section>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+  <style>
+        /* Prevent horizontal overflow */
+        html, body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Ensure full height */
+        }
+        /* Ensure the navbar stays fixed at the top */
+        .navbar {
+            padding: 10px;
+            z-index: 1030;
+            position: fixed;
+            width: 100%;
+            top: 0;
+        }
+        /* Main content area should be scrollable */
+        main {
+            padding-top: 50px; 
+         
+            height: auto; 
+            flex-grow: 1; 
+        }
+        /* Footer should move along with content */
+        footer {
+            width: 100%;
+            padding: 25px;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+        /* Ensure the container fills the available width */
+        .container-fluid {
+            max-width: 100%;
+        }
+    </style>
+</html>

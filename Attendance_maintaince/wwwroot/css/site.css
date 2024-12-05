@@ -1,0 +1,63 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+.background-overlay {
+    background-image: url('/images/Phome.jpg'); /* Ensure this path is correct */
+    background-size: cover; /* Cover the entire viewport */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    position: relative; /* Position relative for overlay */
+    min-height: 90vh; /* Full viewport height */
+    display: flex; /* Flexbox for centering content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+    /* Overlay for better readability */
+    .background-overlay::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 110%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+        z-index: 1; /* Ensure the overlay is on top */
+    }
+
+/* Text styling */
+.text-center {
+    position: relative; /* Position for z-index */
+    z-index: 2; /* Ensure text is above overlay */
+}
+
+h1 {
+    font-size: 4rem; /* Larger heading */
+}
+
+p {
+    font-size: 1.25rem; /* Larger paragraph */
+}
+
+a {
+    text-decoration: underline; /* Underline links */
+}
+
+.text-warning {
+    color: #ffc107; /* Bootstrap warning color */
+}

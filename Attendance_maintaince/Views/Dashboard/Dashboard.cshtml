@@ -1,0 +1,190 @@
+﻿@model Attendance_maintaince.Models.Dashboard
+@using Microsoft.AspNetCore.Http
+@{
+    var token = Context.Request.Cookies["AuthToken"];
+    ViewBag.Token = token;  // Set ViewBag to pass the token
+}
+
+<script>
+    var token = '@Html.Raw(ViewBag.Token)';  // Ensures proper HTML encoding
+    if (token) {
+        sessionStorage.setItem('jwtToken', token);
+    }
+    console.log(sessionStorage.getItem('jwtToken'));
+</script>
+
+
+
+<div class="dashboard-layout">
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Profile", "ViewProfile", "Employee")</li>
+            <li>@Html.ActionLink("Attendance", "AddAttendance", "Employee")</li>
+            <li>@Html.ActionLink("Leaves", "Index", "Leaves")</li>
+            <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+            @if (User.IsInRole("Admin"))
+               {
+                  <li>@Html.ActionLink("AllEmployeeDetail", "ViewAllEmployees", "Employee")</li>
+               }
+        </ul>
+    </div>
+
+    <div class="main-section">
+        <div class="upper-bar">
+            <div class="upper-bar-content">
+                <div class="logo">
+                    <h2>Your Logo</h2>
+                </div>
+                <div class="profile-view">
+                    <a href="/Profile/Index">
+                        <img src="@Model.UserProfilePictureUrl" alt="Profile Picture" class="profile-picture" />
+                        <span>@Model.UserName</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="main-content">
+            <div class="dashboard">
+                <!-- Quick Access Section -->
+                <div class="quick-access">
+                    <div class="holidays">
+                        <h3>Holidays</h3>
+                        <!-- Add holiday details here -->
+                    </div>
+                    <div class="on-leave-today">
+                        <h3>On Leave Today</h3>
+                        <!-- Add on-leave user details here -->
+                    </div>
+                    <div class="working-remotely">
+                        <h3>Working Remotely</h3>
+                        <!-- Add working remotely user details here -->
+                    </div>
+                </div>
+
+                <!-- Announcements Section -->
+                <div class="announcements">
+                    <h3>Announcements</h3>
+                    <!-- Add announcements here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('viewProfileBtn').addEventListener('click', function() {
+        redirectToProfile();  // Ensure redirectToProfile function exists
+    });
+</script>
+
+<style>
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .dashboard-layout {
+        display: flex;
+        height: 100%; 
+        width: 100%;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+        width: 200px;
+        background-color: #333;
+        height: 100vh;
+    }
+
+    .sidebar-menu {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 20px;
+    }
+
+    .sidebar-menu a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        display: block;
+        padding: 10px;
+    }
+
+    .sidebar-menu a:hover {
+        background-color: #444;
+        border-radius: 4px;
+    }
+
+    /* Upper Bar */
+    .upper-bar {
+        background-color: #f4f4f4;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .upper-bar .logo {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .profile-view {
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-view img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    /* Main Content */
+    .main-section {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .main-content {
+        flex-grow: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .dashboard {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .quick-access, .announcements {
+        width: 48%;
+    }
+
+    .holidays, .on-leave-today, .working-remotely, .announcements {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    h3 {
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+</style>

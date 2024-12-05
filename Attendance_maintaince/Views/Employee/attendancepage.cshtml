@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Attendance_maintaince.Models.Attendance>
+@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Data</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Attendance Data</h2>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Date</th>
+                    <th>Coming Time</th>
+                    <th>Leave Time</th>
+                    <th>Attendance Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@item.ID</th>
+                            <td>@item.EmployeeID</td>
+                            <td>@item.EmployeeName</td>
+                            <td>@item.DateOfDay</td>
+                            <td>@item.ComingTime.ToString("hh:mm tt")</td>
+                            <td>
+                                @if (item.LeaveTime.HasValue)
+                                {
+                                    @item.LeaveTime.Value.ToString("hh:mm tt")
+                                }
+                                else
+                                {
+                                    <span>N/A</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.IsPresent)
+                                {
+                                    <span class="badge badge-success">Present</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Absent</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">No attendance records found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

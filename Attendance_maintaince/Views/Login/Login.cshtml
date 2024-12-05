@@ -1,0 +1,61 @@
+﻿@using Attendance_maintaince.Models
+@model Attendance_maintaince.Models.Login
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Login";
+}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-6 col-lg-4" >
+        <div class="card shadow-lg p-4">
+            <div class="text-center mb-4">
+                <img src="~/images/project.jpg" alt="Company Logo" class="img-fluid" style="max-width: 140px;" />
+            </div>
+            <h3 class="text-center mb-3">Login to Your Account</h3>
+
+            <form method="post" asp-action="Login" asp-controller="Login">
+                <!-- Email Field -->
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="Email" name="Email" placeholder="Your email" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="mb-3">
+                    <label for="Password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="Password" name="Password" placeholder="Your password" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+
+                <!-- Sign Up Link -->
+                <div class="text-center mt-3">
+                    <p>Don't have an account? <a asp-action="Registration" asp-controller="Login" class="link-primary">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<!-- Custom CSS for the background -->
+<style>
+    body {
+        background-color: #f7f7f7;
+    }
+    .card {
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>

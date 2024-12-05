@@ -1,0 +1,170 @@
+﻿@model Attendance_maintaince.Models.Attendance
+
+@{
+    ViewData["Title"] = "Attendance";
+}
+@{
+    // Retrieve the EmployeeId and EmployeeName from the User claims
+    var employeeId = User.FindFirst("EmployeeId")?.Value;
+    var employeeName = User.FindFirst("EmployeeName")?.Value;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar bg-dark text-white p-4">
+            <ul class="sidebar-menu list-unstyled">
+                <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "text-white" })</li>
+                <li>@Html.ActionLink("Profile", "ViewProfile", "Employee", null, new { @class = "text-white" })</li>
+                <li>@Html.ActionLink("Leaves", "Index", "Leaves", null, new { @class = "text-white" })</li>
+                <li>@Html.ActionLink("Settings", "Index", "Settings", null, new { @class = "text-white" })</li>
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-md-9 col-lg-10 main-content">
+            <h1 class="my-4">Attendance Page</h1>
+
+            <!-- Mark Attendance Section -->
+            <section class="my-4">
+                <h3>Mark Attendance</h3>
+                <form method="post" asp-action="AddAttendance" asp-controller="Employee">
+                    <input type="hidden" name="EmployeeId" value="@employeeId" />
+                    <input type="hidden" name="EmployeeName" value="@employeeName" />
+
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input id="date" name="Date" type="date" class="form-control" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label><br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="IsPresent" value="true" checked />
+                            <label class="form-check-label">Present</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="IsPresent" value="false" />
+                            <label class="form-check-label">Absent</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Attendance</button>
+                </form>
+            </section>
+
+            <!-- View Attendance Records Section -->
+            <section class="my-4">
+                <h3>Attendance Records</h3>
+                @if (employeeName != null)
+                {
+                    <p><strong>Employee Name:</strong> @employeeName</p>
+                }
+
+                <!-- Table for Old Attendance Records -->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @* Uncomment and populate this section with your attendance records *@
+                        @* @foreach (var record in Model.AttendanceRecords)
+                        {
+                            <tr>
+                                <td>@record.Date.ToString("MM/dd/yyyy")</td>
+                                <td>@(record.IsPresent ? "Present" : "Absent")</td>
+                            </tr>
+                        } *@
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>
+<style>
+    /* Sidebar styling */
+    .sidebar {
+        background-color: #333;
+        height: 100vh;
+        width: 200px; /* Set a specific width for better control */
+        padding: 20px;
+        position: fixed; /* Keep the sidebar fixed */
+    }
+
+    .sidebar-menu {
+        list-style-type: none;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 20px;
+    }
+
+    .sidebar-menu a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        display: block;
+        padding: 10px;
+        transition: background-color 0.3s; /* Added transition for smooth hover effect */
+    }
+
+    .sidebar-menu a:hover {
+        background-color: #444;
+        border-radius: 4px;
+    }
+
+    /* Main content styling */
+    .main-content {
+      
+        flex-grow: 1;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        margin-bottom: 20px;
+    }
+
+    /* Ensure the container doesn't add additional padding */
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Flexbox layout for rows */
+    .row {
+        display: flex;
+        flex-wrap: nowrap; /* Ensure content stays in a row layout */
+        padding: 0; /* Reset padding */
+    }
+
+    /* Adjust sidebar and content for better layout */
+    .col-md-3,
+    .col-lg-2 {
+        padding: 0;
+    }
+
+    .col-md-9,
+    .col-lg-10 {
+        padding-bottom:20px;
+        padding: 0 240px; /* Provide padding to the content area */
+        margin-bottom: auto;
+        margin-top: 20px;
+}
+    }
+
+    /* Manually adjust for mobile view */
+    .sidebar.small-screen {
+        width: 80%; /* Sidebar becomes full-width on smaller screens */
+        position: static; /* Sidebar will scroll with content on small screens */
+    }
+
+    .main-content.small-screen {
+        margin-left: 0; /* Remove left margin for smaller screens */
+    }
+</style>
+

@@ -1,0 +1,249 @@
+﻿@* @using Attendance_maintaince.Models
+@model Attendance_maintaince.Models.Employee
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f9;
+        }
+
+        .registration-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            margin: auto; /* Center the form */
+        }
+
+        .footer {
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-card">
+        <h3 class="text-center mb-4">Sign Up</h3>
+        <form asp-action="Registration" method="post" novalidate>
+            <!-- Name -->
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Your name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Your email" type="email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group mb-3">
+                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Your phone number" pattern="\d{10}" required />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Your password" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <!-- Position Dropdown with Custom Option -->
+            <div class="form-group mb-3">
+                <label class="form-label">Position</label>
+                <select asp-for="SelectedPosition" asp-items="Model.PositionOptions" class="form-select" id="positionDropdown" required>
+                    <option value="" disabled selected>Select position</option>
+                    <option value="Custom">Custom</option>
+                </select>
+                <input type="text" id="customPositionInput" name="CustomPosition" class="form-control mt-2" placeholder="Enter custom position" style="display:none;" />
+                <span asp-validation-for="SelectedPosition" class="text-danger"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-dark w-100">Sign Up</button>
+            </div>
+
+            <!-- Login Redirect Link -->
+            <div class="text-center">
+                <p>Already have an account? <a asp-controller="Login" asp-action="Login">Log in</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Attendance App</p>
+    </div>
+
+    <script>
+        const positionDropdown = document.getElementById('positionDropdown');
+        const customPositionInput = document.getElementById('customPositionInput');
+
+        positionDropdown.addEventListener('change', function () {
+            customPositionInput.style.display = this.value === 'Custom' ? 'block' : 'none';
+            customPositionInput.required = this.value === 'Custom';
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+ *@
+ @using Attendance_maintaince.Models
+@model Attendance_maintaince.Models.Employee
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f9;
+        }
+
+        .registration-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            margin: auto; /* Center the form */
+        }
+
+        .footer {
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid #ccc;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-card">
+        <h3 class="text-center mb-4">Sign Up</h3>
+        <form asp-action="Registration" method="post" novalidate>
+            <!-- Name -->
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Your name" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Your email" type="email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group mb-3">
+                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Your phone number" pattern="\d{10}" required />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Your password" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <!-- Position Dropdown with Custom Option -->
+            <div class="form-group mb-3">
+                <label class="form-label">Position</label>
+                <select asp-for="Position" asp-items="Model.PositionOptions" class="form-select" id="positionDropdown" required>
+                    <option value="" disabled selected>Select position</option>
+                    <option value="Custom">Custom</option>
+                </select>
+                <input type="text" id="customPositionInput" name="CustomPosition" class="form-control mt-2" placeholder="Enter custom position" style="display:none;" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-dark w-100">Sign Up</button>
+            </div>
+
+            <!-- Login Redirect Link -->
+            <div class="text-center">
+                <p>Already have an account? <a asp-controller="Login" asp-action="Login">Log in</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Attendance App</p>
+    </div>
+
+    <script>
+        const positionDropdown = document.getElementById('positionDropdown');
+        const customPositionInput = document.getElementById('customPositionInput');
+
+        positionDropdown.addEventListener('change', function () {
+            customPositionInput.style.display = this.value === 'Custom' ? 'block' : 'none';
+            customPositionInput.required = this.value === 'Custom';
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

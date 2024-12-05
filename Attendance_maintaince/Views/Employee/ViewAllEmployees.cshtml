@@ -1,0 +1,179 @@
+﻿@* @model IEnumerable<Attendance_maintaince.Models.Employee> 
+
+@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Employee Profiles</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Employee Profiles</h1>
+
+        <!-- Displaying employees in a list group -->
+        <div class="list-group">
+            @foreach (var employee in Model) 
+            {
+
+                <a href="@Url.Action("ViewProfile1", "Employee", new { employeeId = employee.EmployeeId })" class="list-group-item list-group-item-action">
+
+                    <h5 class="mb-1">@employee.Name</h5> <!-- Employee Name -->
+
+                    <p class="mb-1">Position: @employee.Position</p> <!-- Employee Position -->
+
+                    <small>Email: @employee.Email</small> <!-- Employee Email -->
+                </a>
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+ </body>
+</html>
+ *@
+@* @model IEnumerable<Attendance_maintaince.Models.Employee>
+
+@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Employee Profiles</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Employee Profiles</h1>
+
+        <!-- Displaying employees in a list group -->
+        <div class="list-group">
+            @foreach (var employee in Model) 
+            {
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">@employee.Name</h5> <!-- Employee Name -->
+                        <p class="mb-1">Position: @employee.Position</p> <!-- Employee Position -->
+                        <small>Email: @employee.Email</small> <!-- Employee Email -->
+                    </div>
+                    <div class="btn-group" role="group">
+                        <!-- View Button -->
+                        <a href="@Url.Action("ViewProfile1", "Employee", new { employeeId = employee.EmployeeId })" class="btn btn-info btn-sm me-2">
+                            View
+                        </a>
+
+                        <!-- Update Button -->
+                        <a href="@Url.Action("Update", "Employee", new { employeeId = employee.EmployeeId })" class="btn btn-primary btn-sm me-2">
+                            Update
+                        </a>
+                        
+                        <!-- Delete Button -->
+                        <form method="post" action="@Url.Action("Delete", "Employee", new { employeeId = employee.EmployeeId })" onsubmit="return confirm('Are you sure you want to delete this employee?');" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> *@
+@model IEnumerable<Attendance_maintaince.Models.Employee>
+
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Employee Profiles";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Header with Logo and Import Button -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Logo Section -->
+            <div>
+                <img src="~/images/logo.png" alt="Company Logo" style="max-height: 50px;" />
+            </div>
+            <!-- Import Employees Section -->
+            <div>
+                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importModal">
+                    <i class="bi bi-upload"></i> Import Employees
+                </a>
+            </div>
+        </div>
+
+        <!-- Import Modal for File Upload -->
+        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importModalLabel">Upload Employee Excel File</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="uploadForm" method="post" enctype="multipart/form-data" action="@Url.Action("AddBulkEmployees", "Employee")">
+                            <div class="mb-3">
+                                <label for="employeeFile" class="form-label">Choose Excel File</label>
+                                <input class="form-control" type="file" id="employeeFile" name="employeeFile" accept=".xlsx,.xls">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="mb-4">Employee Profiles</h1>
+
+        <!-- Displaying employees in a list group -->
+        <div class="list-group">
+            @foreach (var employee in Model)
+            {
+                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">@employee.Name</h5> <!-- Employee Name -->
+                        <p class="mb-1">Position: @employee.Position</p> <!-- Employee Position -->
+                        <small>Email: @employee.Email</small> <!-- Employee Email -->
+                    </div>
+                    <div class="btn-group" role="group">
+                        <!-- View Button -->
+                        <a href="@Url.Action("ViewProfile1", "Employee", new { employeeId = employee.EmployeeId })" class="btn btn-info btn-sm me-2">
+                            View
+                        </a>
+
+                        <!-- Update Button -->
+                        <a href="@Url.Action("Update", "Employee", new { employeeId = employee.EmployeeId })" class="btn btn-primary btn-sm me-2">
+                            Update
+                        </a>
+                        
+                        <!-- Delete Button -->
+                        <form method="post" action="@Url.Action("Delete", "Employee", new { employeeId = employee.EmployeeId })" onsubmit="return confirm('Are you sure you want to delete this employee?');" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,6 +1,4 @@
 ﻿using Attendance_maintaince.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Caching.Memory;
@@ -8,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+//using Microsoft.AspNet.Session;
 
 namespace Attendance_maintaince.Controllers
 {
@@ -67,7 +66,7 @@ namespace Attendance_maintaince.Controllers
                new Claim(ClaimTypes.Role, user.Role), // Add the role claim here
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-           
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var issuer = _configuration["Jwt:Issuer"];
@@ -96,6 +95,27 @@ namespace Attendance_maintaince.Controllers
             }
             return false;
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Protect against CSRF attacks
+        public IActionResult Logout()
+        {
+            // Remove the authentication cookie
+            HttpContext.Response.Cookies.Delete("AuthToken");
+
+            // Optionally clear the session
+            HttpContext.Session.Clear();
+
+            // Redirect to the login page
+            // Redirect to the Home page (Home/Index)
+            return RedirectToAction("Index", "Home");
+        }
+
+
+
+
+
 
         [HttpPost("Login/Registration")]
         public IActionResult Registration(Employee model)
@@ -159,10 +179,10 @@ namespace Attendance_maintaince.Controllers
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
-        
 
 
-      
+
+
 
     }
 }

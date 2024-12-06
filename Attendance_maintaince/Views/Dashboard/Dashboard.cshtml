@@ -1,5 +1,6 @@
 ﻿@model Attendance_maintaince.Models.Dashboard
 @using Microsoft.AspNetCore.Http
+
 @{
     var token = Context.Request.Cookies["AuthToken"];
     ViewBag.Token = token;  // Set ViewBag to pass the token
@@ -13,151 +14,205 @@
     console.log(sessionStorage.getItem('jwtToken'));
 </script>
 
-
-
 <div class="dashboard-layout">
-    <div class="sidebar">
-        <ul class="sidebar-menu">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("Profile", "ViewProfile", "Employee")</li>
-            <li>@Html.ActionLink("Attendance", "AddAttendance", "Employee")</li>
-            <li>@Html.ActionLink("Leaves", "Index", "Leaves")</li>
-            <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
-            @if (User.IsInRole("Admin"))
-               {
-                  <li>@Html.ActionLink("AllEmployeeDetail", "ViewAllEmployees", "Employee")</li>
-               }
-        </ul>
-    </div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav>
+            <ul class="sidebar-menu">
+                <li>@Html.ActionLink("Home", "Index", "Dashboard")</li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>@Html.ActionLink("Emps Detail", "ViewAllEmployees", "Employee")</li>
+                }
+                <li class="menu-item">
+                    Me
+                    <ul class="submenu">
+                        <li>@Html.ActionLink("Attendance", "AddAttendance", "Employee")</li>
+                        <li>@Html.ActionLink("Leave", "Index", "Leaves")</li>
+                        <li>@Html.ActionLink("Profile", "ViewProfile", "Employee")</li>
+                        <li>@Html.ActionLink("Performance", "PerformanceIndex", "Employee")</li>
+                    </ul>
+                </li>
+                <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+            </ul>
+        </nav>
+    </aside>
 
-    <div class="main-section">
-        <div class="upper-bar">
-            <div class="upper-bar-content">
-                <div class="logo">
-                    <h2>Your Logo</h2>
-                </div>
-                <div class="profile-view">
-                    <a href="/Profile/Index">
-                        <img src="@Model.UserProfilePictureUrl" alt="Profile Picture" class="profile-picture" />
-                        <span>@Model.UserName</span>
-                    </a>
-                </div>
+    <!-- Main Section -->
+    <main class="main-section">
+        <!-- Upper Bar -->
+        <header class="upper-bar">
+            <div class="logo">
+                <h2>Your Logo</h2>
             </div>
-        </div>
+            <div class="profile-view">
+                <a href="/Profile/Index">
+                    <img src="@Model.UserProfilePictureUrl" alt="Profile Picture" class="profile-picture" />
+                    <span>@Model.UserName</span>
+                </a>
+            </div>
+        </header>
 
-        <!-- Main Content Section -->
-        <div class="main-content">
+        <!-- Main Content -->
+        <section class="main-content">
             <div class="dashboard">
                 <!-- Quick Access Section -->
-                <div class="quick-access">
-                    <div class="holidays">
+                <section class="quick-access">
+                    <article class="holidays">
                         <h3>Holidays</h3>
                         <!-- Add holiday details here -->
-                    </div>
-                    <div class="on-leave-today">
+                    </article>
+                    <article class="on-leave-today">
                         <h3>On Leave Today</h3>
                         <!-- Add on-leave user details here -->
-                    </div>
-                    <div class="working-remotely">
+                    </article>
+                    <article class="working-remotely">
                         <h3>Working Remotely</h3>
                         <!-- Add working remotely user details here -->
-                    </div>
-                </div>
+                    </article>
+                </section>
 
                 <!-- Announcements Section -->
-                <div class="announcements">
+                <section class="announcements">
                     <h3>Announcements</h3>
                     <!-- Add announcements here -->
-                </div>
+                </section>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 </div>
 
-<script>
-    document.getElementById('viewProfileBtn').addEventListener('click', function() {
-        redirectToProfile();  // Ensure redirectToProfile function exists
-    });
-</script>
-
 <style>
-    html, body {
-        height: 100%;
-        width: 100%;
+    /* Global Reset */
+    *, *::before, *::after {
         margin: 0;
         padding: 0;
-        font-family: Arial, sans-serif;
+      /*   box-sizing: border-box; */
     }
 
+    html, body {
+        font-family: Arial, sans-serif;
+        height: 100%;
+        width: 100%;
+       
+        overflow: hidden;
+    }
+
+    /* Layout */
     .dashboard-layout {
         display: flex;
-        height: 100%; 
+        height: 100vh;
         width: 100%;
     }
 
     /* Sidebar Styling */
     .sidebar {
-        width: 200px;
-        background-color: #333;
-        height: 100vh;
+        width: 10%;
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        height: auto;
+       
     }
 
     .sidebar-menu {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
+        margin-top:20px;
+        list-style: none;
+        padding :0;
     }
 
-    .sidebar-menu li {
-        margin-bottom: 20px;
-    }
-
+   
     .sidebar-menu a {
-        color: #fff;
         text-decoration: none;
-        font-size: 18px;
+        color: inherit;
+        font-size: 16px;
         display: block;
-        padding: 10px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
     }
 
     .sidebar-menu a:hover {
-        background-color: #444;
-        border-radius: 4px;
+        background-color: #34495e;
     }
 
+    .menu-item {
+        position: relative;
+        cursor: pointer;
+        padding: 10px 15px;
+    }
+
+.submenu {
+    list-style: none;
+    padding: 0; 
+    margin: 0; 
+    background-color: #34495e; 
+    display: none;
+    position: absolute;
+    top: 0; /* Aligns with the parent menu item */
+    left: 100%; /* Opens the submenu to the right of the main sidebar */
+    border-radius: 5px; /* Rounded edges for the submenu */
+    min-width: 100px; /* Consistent width */
+}
+
+.menu-item:hover .submenu {
+    display: block; 
+}
+
+.submenu li {
+    text-align: left;
+   
+}
+
+.submenu a {
+    color: #ecf0f1; /* Text color */
+    text-decoration: none; /* No underline */
+    font-size: 13px; /* Font size */
+    line-height: 1.5; /* Adjust spacing inside items */
+    display: block; /* Shrinks the highlight area around text */
+    padding: 5px 10px; /* Even padding for highlight effect */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover transition */
+    border-radius: 5px; /* Slightly rounded corners on hover */
+}
+
+.submenu a:hover {
+    background-color: #1abc9c; /* Highlight background on hover */
+    color: #ffffff; /* Text color on hover */
+}
+
+   
     /* Upper Bar */
     .upper-bar {
-        background-color: #f4f4f4;
-        padding: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #ddd;
+        background-color: #f8f9fa;
+        padding: 10px 20px;
+        border-bottom: 1px solid #e5e5e5;
     }
 
-    .upper-bar .logo {
-        font-size: 24px;
-        font-weight: bold;
+    .logo h2 {
+        color: #2c3e50;
     }
 
     .profile-view {
         display: flex;
         align-items: center;
+     /*    gap: 10px; */
     }
 
-    .profile-view img {
+    .profile-picture {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        margin-right: 10px;
+        object-fit: cover;
     }
 
-    /* Main Content */
+    /* Main Section */
     .main-section {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        height: 100vh;
+        background-color: #ecf0f1;
     }
 
     .main-content {
@@ -168,23 +223,22 @@
 
     .dashboard {
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
     }
 
     .quick-access, .announcements {
-        width: 48%;
-    }
-
-    .holidays, .on-leave-today, .working-remotely, .announcements {
-        margin-bottom: 20px;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        flex: 1 1 calc(50% - 20px);
         background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    h3 {
+    .quick-access h3, .announcements h3 {
         margin-bottom: 10px;
-        font-size: 20px;
+        font-size: 18px;
+        color: #34495e;
     }
+
 </style>

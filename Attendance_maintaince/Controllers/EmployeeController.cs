@@ -1,5 +1,6 @@
 ﻿using Attendance_maintaince.Middleware;
 using Attendance_maintaince.Models;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -100,13 +101,22 @@ namespace Attendance_maintaince.Controllers
             return View("AttendancePage", attendanceData);
         }
 
-        // Method to fetch attendance records for the employee
+        [HttpGet]
+        public IActionResult GutAttendancebyId(Guid Id)
+        {
+            var attendanceData = GetAttendanceByEmployeeId(Id);
+
+            if (attendanceData == null || !attendanceData.Any())
+            {
+                return NotFound("Attendance data not found.");
+            }
+            return View("AttendancePage", attendanceData);
+        }
+
         private IEnumerable<Attendance> GetAttendanceByEmployeeId(Guid employeeId)
         {
             return _context.Attendances.Where(e => e.EmployeeID == employeeId).ToList();
         }
-
-
 
         private Guid GetEmployeeIdFromClaims()
         {
@@ -127,12 +137,10 @@ namespace Attendance_maintaince.Controllers
             return Guid.Empty;
         }
 
-
         private Employee GetEmployeeById(Guid employeeId)
         {
             return _context.Employees.FirstOrDefault(e => e.EmployeeId == employeeId && e.Status == "Active");
         }
-
 
         // POST: Employee/Delete
         [HttpPost]
@@ -152,8 +160,6 @@ namespace Attendance_maintaince.Controllers
             // Redirect back to the same employee profile page
             return RedirectToAction("ViewAllEmployees");
         }
-
-
 
         // GET: Employee/AddAttendance
         public IActionResult AddAttendance()
@@ -245,12 +251,12 @@ namespace Attendance_maintaince.Controllers
                             Name = worksheet.Cells[row, 1].Text,
                             Email = worksheet.Cells[row, 2].Text,
                             Password = BCrypt.Net.BCrypt.HashPassword(worksheet.Cells[row, 3].Text),  // Hash the password
-                            Position= worksheet.Cells[row, 4].Text,
+                            Position = worksheet.Cells[row, 4].Text,
+                            PhoneNumber= worksheet.Cells[row, 5].Text,
                             Role = "Employee",
                             Status = "Active",  // Default status
                             CreatedAt = DateTime.UtcNow
                         };
-
                         employees.Add(employee);
                     }
                 }
@@ -258,8 +264,76 @@ namespace Attendance_maintaince.Controllers
 
             return employees;
         }
+
+
+        public ActionResult ExportEmployeeToExcel()
+        {
+            // Fetch data from the Employee table
+            var employees = _context.Employees
+                                    .Select(e => new
+                                    {
+                                        e.EmployeeId,
+                                        e.Name,
+                                        e.Email,
+                                        e.CreatedAt,
+                                        e.Position,
+                                        e.Role,
+                                        e.Status,
+                                        e.PhoneNumber,
+                                    })
+                                    .ToList();
+
+            // Create a DataTable
+            var dataTable = new System.Data.DataTable("Employees");
+            dataTable.Columns.Add("Employee ID", typeof(string));
+            dataTable.Columns.Add("Name", typeof(string));
+            dataTable.Columns.Add("Email", typeof(string));
+            dataTable.Columns.Add("PhoneNumber", typeof(string));
+            dataTable.Columns.Add("Position", typeof(string));
+            dataTable.Columns.Add("Role", typeof(string));
+            dataTable.Columns.Add("CreatedAt", typeof(DateTime));
+            dataTable.Columns.Add("Status", typeof(string));
+            
+            // Add data to DataTable
+            foreach (var emp in employees)
+            {
+                     dataTable.Rows.Add(emp.EmployeeId,
+                                        emp.Name,
+                                        emp.Email,
+                                        emp.PhoneNumber,
+                                        emp.Position,
+                                        emp.Role,
+                                        emp.CreatedAt,
+                                        emp.Status);
+            }
+
+            // Create Excel file
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add(dataTable, "Employees");
+                worksheet.Columns().AdjustToContents();
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+
+                    // Return the file as a download
+                    return File(stream.ToArray(),
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                "Employees.xlsx");
+                }
+            }
+        }
     }
 }
+
+
+
+
+
+
+
 
 
 

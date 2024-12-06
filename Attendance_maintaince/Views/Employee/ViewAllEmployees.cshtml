@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <!-- Import Modal for File Upload -->
+   @*      <!-- Import Modal for File Upload -->
         <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -137,7 +137,38 @@
                     </div>
                 </div>
             </div>
+        </div> *@
+
+<!-- Import Modal for File Upload -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Upload Employee Excel File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" method="post" enctype="multipart/form-data" action="@Url.Action("AddBulkEmployees", "Employee")">
+                    <div class="mb-3">
+                        <label for="employeeFile" class="form-label">Choose Excel File</label>
+                        <input class="form-control" type="file" id="employeeFile" name="employeeFile" accept=".xlsx,.xls">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
         </div>
+    </div>
+</div>
+
+<!-- Export Button -->
+<div class="d-flex justify-content-end my-3">
+    <a href="@Url.Action("ExportEmployeeToExcel", "Employee")" class="btn btn-success">Export Employees</a>
+</div>
+
+
+
+
+
 
         <h1 class="mb-4">Employee Profiles</h1>
 
@@ -151,15 +182,16 @@
                         <p class="mb-1">Position: @employee.Position</p> <!-- Employee Position -->
                         <small>Email: @employee.Email</small> <!-- Employee Email -->
                     </div>
+
                     <div class="btn-group" role="group">
                         <!-- View Button -->
                         <a href="@Url.Action("ViewProfile1", "Employee", new { employeeId = employee.EmployeeId })" class="btn btn-info btn-sm me-2">
                             View
                         </a>
 
-                        <!-- Update Button -->
-                        <a href="@Url.Action("Update", "Employee", new { employeeId = employee.EmployeeId })" class="btn btn-primary btn-sm me-2">
-                            Update
+                        <!-- GutAttendancebyId Button -->
+                        <a href="@Url.Action("GutAttendancebyId", "Employee", new { Id = employee.EmployeeId })" class="btn btn-primary btn-sm me-2">
+                            Attendance
                         </a>
                         
                         <!-- Delete Button -->
